@@ -1,0 +1,164 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    height: 100vh;
+    font-family: 'Dosis';
+}
+
+h1 {
+    text-align: center;
+}
+
+.main_container {
+    -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    width: 1400px;
+    height: 600px;
+    border-radius: 15px;
+    display: flex;
+}
+
+.left-container {
+    border: 1px solid black;
+    width: 200px;
+    height: 600px;
+}
+
+.mark {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: background .3s;
+}
+
+.mark:hover {
+    background-color: #68D8D6;
+    transition: background .3s;
+}
+
+.center-container {
+    border: 1px solid black;
+    width: 700px;
+    height: 600px;
+    display: flex;
+    overflow: hidden;
+}
+
+.background-top {
+    position: absolute;
+    height: 80px;
+    width: 700px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    z-index: 3;
+}
+
+.background-bottom {
+    position: absolute;
+    height: 80px;
+    width: 700px;
+    top: 575px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: 3;
+}
+
+.text-container>div {
+    margin: 50px 0;
+    padding: 0 20px;
+}
+
+.right-container {
+    border: 1px solid black;
+    width: 500px;
+    height: 600px;
+}
+
+.text-container {
+    z-index: 2;
+    position: relative;
+    bottom: 0px;
+    height: fit-content;
+    width: 660px;
+}
+
+.slider {
+    width: 40px;
+    background-color: #C4FFF9;
+    z-index: 5;
+}
+
+.slider-button {
+    z-index: 5;
+    background-color: white;
+    border: solid #07BEB8 1px;
+    height: 50px;
+    width: 50px;
+    border-radius: 20%;
+    position: relative;
+    top: 0px;
+    right: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.birth-date {
+    text-align: center;
+}
+
+.timeline-container {
+    display: flex;
+}
+
+.timeline-left {
+    width: 50%;
+    border-right: 2px solid grey;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.timeline-right {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.timeline-element {
+    height: auto;
+    text-align: center;
+    -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    padding: 20px;
+    border-radius: 15px;
+    width: 80%;
+}
+
+.timeline-additional {
+    text-align: left;
+}
+
+.timeline-image-element {
+    height: 200px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.timeline-image-element img {
+    width: 50%;
+}
+
+.tech-img-container {
+    width: 40px;
+}
+
+.tech-img-container img {
+    width: 40px;
+}
