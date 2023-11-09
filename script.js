@@ -1,4 +1,5 @@
 const pcContainer = document.querySelector(".pc-container");
+const isUserPolish = window.location.href == "http://michaljeleniewski.pl/"
 
 const leftContainer = document.querySelector(".left-container")
 const languageSection = document.querySelector(".language")
@@ -19,6 +20,17 @@ const bottomBackground = document.querySelector(".background-bottom")
 
 const timelineElements = document.querySelectorAll(".timeline-element")
 const timelineImageElements = document.querySelectorAll(".timeline-image-element")
+
+const portfolioElements = document.querySelectorAll(".portfolio-element")
+
+const gallery = document.querySelector(".gallery");
+const portfolioGalleryIcons = document.querySelectorAll(".gallery_icon");
+const portfolioElementsGallerySize = {
+    "gomove": 4,
+    "variaposnania": 4
+}
+
+const contactForm = document.querySelector("#form")
 
 const sliderButton = document.querySelector('.slider-button');
 const slider = document.querySelector(".slider");
@@ -64,8 +76,8 @@ function handleMarkClick(clickedMark) {
             marks[i].classList.remove("active")
         }
     }
-    sliderButton.style.transition = "top .3s";
-    textContainer.style.transition = "bottom .3s";
+    sliderButton.style.transition = "top .4s";
+    textContainer.style.transition = "bottom .2s";
     let newButtonPosition = (newTextPosition / (textContainer.offsetHeight - centerContainer.offsetHeight)) * (slider.offsetHeight - sliderButton.offsetHeight)
     if (newButtonPosition > slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBottomBorder) {
         newButtonPosition = slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBottomBorder;
@@ -75,6 +87,9 @@ function handleMarkClick(clickedMark) {
     }
     sliderButton.style.top = newButtonPosition + "px";
     textContainer.style.bottom = newTextPosition + "px";
+    setTimeout(() => {
+        displayElements();
+    }, 200);
 }
 
 function handleScrollMove(e) {
@@ -86,9 +101,8 @@ function handleScrollMove(e) {
         newPosition = slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBottomBorder;
     }
     sliderButton.style.top = newPosition + "px";
-    textContainer.style.bottom = (newPosition / (slider.offsetHeight - sliderButton.offsetHeight)) * (textContainer.offsetHeight - centerContainer.offsetHeight) + "px";
+    textContainer.style.bottom = (newPosition / (slider.offsetHeight - 2 * sliderBottomBorder - sliderButton.offsetHeight)) * (textContainer.offsetHeight - centerContainer.offsetHeight) + "px";
     updateActiveMark(newPosition);
-    displayElements();
 }
 
 function displayEducationSection(i) {
@@ -116,12 +130,30 @@ function displayElements() {
             comparedTextPosition += timelineElements[i].offsetHeight;
         }
     }
+
+    comparedTextPosition += document.querySelector(".technologies-and-skills h1").offsetHeight
+
     for (let i = 0; i < techInnerContainers.length; i++) {
         if (actualTextPosition > comparedTextPosition) {
             techInnerContainers[i].style.opacity = "1";
             techInnerContainers[i].style.left = "0px"
             comparedTextPosition += techInnerContainers[i].offsetHeight
         }
+    }
+
+    comparedTextPosition += document.querySelector(".portfolio h1").offsetHeight
+
+    for (let i = 0; i < portfolioElements.length; i++) {
+        if (actualTextPosition > comparedTextPosition) {
+            portfolioElements[i].style.opacity = "1";
+            portfolioElements[i].style.bottom = "0px"
+            comparedTextPosition += portfolioElements[i].offsetHeight
+        }
+    }
+
+    comparedTextPosition += document.querySelector(".contact-form h1").offsetHeight
+    if (actualTextPosition > comparedTextPosition) {
+        contactForm.style.opacity = "1"
     }
 }
 
@@ -155,15 +187,19 @@ sliderButton.addEventListener("mousedown", (e) => {
             sliderButton.style.transition = "top 0s"
             textContainer.style.transition = "bottom 0s"
             handleScrollMove(e)
+            displayElements();
         }
     });
 });
 
 if (!isDragging) {
     slider.addEventListener("click", (e) => {
-        sliderButton.style.transition = "top .3s"
-        textContainer.style.transition = "bottom .3s"
+        sliderButton.style.transition = "top .2s"
+        textContainer.style.transition = "bottom .2s"
         handleScrollMove(e)
+        setTimeout(() => {
+            displayElements();
+        }, 200);
     })
 }
 
@@ -185,3 +221,148 @@ techImgContainers.forEach(container => {
         image.style.transform = 'scale(1)';
     })
 })
+
+function displayGallery(id) {
+    const mainImageContainer = document.querySelector(".main-img");
+    const allImagesContainer = document.querySelector(".other-images-inner-container");
+    const mainImgEl = document.createElement("img");
+    const mainImgUrl = isUserPolish ? `./images/${id}_${1}.png` : `../images/${id}_${1}.png` ;
+    mainImgEl.setAttribute("id", 1);
+    mainImgEl.src = mainImgUrl;
+    mainImageContainer.insertAdjacentElement('afterbegin', mainImgEl);
+    for (let i = 1; i <= portfolioElementsGallerySize[id]; i++) {
+        const imgEl = document.createElement("img");
+        const imgUrl = isUserPolish ? `./images/${id}_${i}.png` : `../images/${id}_${i}.png` ;
+        imgEl.src = imgUrl;
+        const imgId = `${i}`
+        imgEl.setAttribute("id", imgId);
+        allImagesContainer.insertAdjacentElement('beforeend', imgEl)
+    }
+    allImagesContainer.children[0].classList.add('image-active');
+    let displayedPhoto = mainImageContainer.children[0];
+    enablePhotoChanging(displayedPhoto)
+    gallery.style.display = "flex"
+}
+
+function enablePhotoChanging(displayedPhoto) {
+    const allImages = document.querySelectorAll(".other-images-inner-container img");
+    const rightArrow = document.querySelector(".right-arrow");
+    const leftArrow = document.querySelector(".left-arrow");
+    const closeButton = document.querySelector(".close-gallery")
+
+    allImages.forEach(img => {
+        img.addEventListener("click", (e) => {
+            for (let i = 0; i <= allImages.length; i++) {
+                if (i + 1 == e.target.id) {
+                    displayedPhoto.src = img.src;
+                    displayedPhoto.id = img.id;
+                    img.classList.add("image-active");
+                }
+                else {
+                    allImages[i].classList.remove("image-active")
+                }
+            }
+        })
+    })
+
+    leftArrow.addEventListener("click", () => {
+        let displayedPhotoId;
+        for (let i = 0; i < allImages.length; i++) {
+            if (displayedPhoto.id == 1) {
+                displayedPhoto.src = allImages[allImages.length - 1].src;
+                displayedPhotoId = allImages[allImages.length - 1].id;
+                allImages[allImages.length - 1].classList.add("image-active");
+                allImages[0].classList.remove("image-active")
+            }
+            else if (displayedPhoto.id == allImages[i].id) {
+                displayedPhoto.src = allImages[i - 1].src;
+                displayedPhotoId = allImages[i - 1].id;
+                allImages[i].classList.remove("image-active")
+                allImages[i - 1].classList.add("image-active")
+            }
+        }
+        displayedPhoto.id = `${displayedPhotoId}`;
+    })
+
+    rightArrow.addEventListener("click", () => {
+        let displayedPhotoId;
+        for (let i = 0; i < allImages.length; i++) {
+            if (displayedPhoto.id == allImages.length) {
+                displayedPhoto.src = allImages[0].src;
+                displayedPhotoId = allImages[0].id
+                allImages[allImages.length - 1].classList.remove("image-active");
+                allImages[0].classList.add("image-active");
+            }
+            else if (displayedPhoto.id == allImages[i].id) {
+                displayedPhoto.src = allImages[i + 1].src;
+                displayedPhotoId = allImages[i + 1].id
+                allImages[i].classList.remove("image-active")
+                allImages[i + 1].classList.add("image-active");
+            }
+        }
+        displayedPhoto.id = `${displayedPhotoId}`;
+    })
+    closeButton.addEventListener("click", () => {
+        displayedPhoto.remove();
+        allImages.forEach(image => {
+            image.remove()
+        })
+        gallery.style.display = "none"
+    })
+}
+
+portfolioGalleryIcons.forEach(icon => {
+    icon.addEventListener("click", (e) => {
+        displayGallery(e.target.id)
+    })
+})
+
+function clearContactForm() {
+    document.getElementById('fullName').value = "";
+    document.getElementById('email').value = "";
+    document.getElementById('message').value = "";
+}
+
+contactForm.addEventListener('submit', function (e) {
+    e.preventDefault()
+    const fullName = document.getElementById('fullName').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+    const errorElement = document.getElementById('error-message');
+
+    if (!fullName || !email || !message) {
+        errorElement.textContent = isUserPolish ? 'Wszystkie pola są wymagane' : 'All fields are required';
+        return;
+    }
+
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        errorElement.textContent = isUserPolish ? 'Nieprawidłowy adres e-mail' : 'Incorrect e-mail adress';
+        return;
+    }
+    const formData = new FormData();
+    formData.append('fullName', fullName);
+    formData.append('email', email);
+    formData.append('message', message);
+
+    errorElement.textContent = '';
+    const loader = document.getElementById('loader');
+    loader.style.display = 'block';
+
+    fetch('submit_form.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(data => {
+            clearContactForm();
+            errorElement.textContent = isUserPolish ? 'Wiadomość została wysłana' : 'Message successfully sent';
+            loader.style.display = 'none';
+            console.log(data);
+        })
+        .catch(error => {
+            errorElement.textContent = isUserPolish ? 'Nie udało się wysłać wiadomości, spróbuj ponownie' : 'Failed to send message, please try again';
+            console.error('Błąd:', error);
+            loader.style.display = 'none';
+        });
+});
