@@ -257,10 +257,8 @@ function clearContactForm() {
     document.getElementById('message').value = "";
 }
 
-window.addEventListener('load', () => {
-    pcContainer.style.left = 0 + "px";
-    pcContainer.style.opacity = "1";
-})
+pcContainer.style.left = 0 + "px";
+pcContainer.style.opacity = "1";
 
 setTimeout(() => {
     languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
@@ -339,7 +337,7 @@ techImgContainers.forEach(container => {
     })
 })
 
-document.addEventListener("touchmove", () => {
+document.querySelector("body").addEventListener("touchmove", () => {
     displayElements()
 })
 
