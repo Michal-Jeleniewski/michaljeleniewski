@@ -1,5 +1,6 @@
 const pcContainer = document.querySelector(".pc-container");
 const isUserPolish = window.location.href == "http://michaljeleniewski.pl/"
+const isUserMobile = window.innerWidth < 1100;
 
 const leftContainer = document.querySelector(".left-container")
 const languageSection = document.querySelector(".language")
@@ -21,6 +22,9 @@ const bottomBackground = document.querySelector(".background-bottom")
 const timelineElements = document.querySelectorAll(".timeline-element")
 const timelineImageElements = document.querySelectorAll(".timeline-image-element")
 
+const techInnerContainers = document.querySelectorAll(".technologies-and-skills-inner-container")
+const techImgContainers = document.querySelectorAll('.tech-img-container')
+
 const portfolioElements = document.querySelectorAll(".portfolio-element")
 
 const gallery = document.querySelector(".gallery");
@@ -34,10 +38,10 @@ const contactForm = document.querySelector("#form")
 
 const sliderButton = document.querySelector('.slider-button');
 const slider = document.querySelector(".slider");
-const sliderBottomBorder = parseInt(window.getComputedStyle(slider).getPropertyValue('border-bottom'))
+const sliderBorderSize = parseInt(window.getComputedStyle(slider).getPropertyValue('border-bottom'))
 
-const techInnerContainers = document.querySelectorAll(".technologies-and-skills-inner-container")
-const techImgContainers = document.querySelectorAll('.tech-img-container')
+const mobileFirstContainer = document.querySelector(".first-container");
+
 
 let isDragging = false;
 
@@ -79,8 +83,8 @@ function handleMarkClick(clickedMark) {
     sliderButton.style.transition = "top .4s";
     textContainer.style.transition = "bottom .2s";
     let newButtonPosition = (newTextPosition / (textContainer.offsetHeight - centerContainer.offsetHeight)) * (slider.offsetHeight - sliderButton.offsetHeight)
-    if (newButtonPosition > slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBottomBorder) {
-        newButtonPosition = slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBottomBorder;
+    if (newButtonPosition > slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBorderSize) {
+        newButtonPosition = slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBorderSize;
     }
     if (newTextPosition > textContainer.offsetHeight - centerContainer.offsetHeight) {
         newTextPosition = textContainer.offsetHeight - centerContainer.offsetHeight;
@@ -92,16 +96,15 @@ function handleMarkClick(clickedMark) {
     }, 200);
 }
 
-function handleScrollMove(e) {
-    let newPosition = e.clientY - slider.getBoundingClientRect().top - sliderButton.offsetHeight / 2;
+function handleScrollMove(newPosition) {
     if (newPosition < 0) {
         newPosition = 0;
     }
-    if (newPosition > slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBottomBorder) {
-        newPosition = slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBottomBorder;
+    if (newPosition > slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBorderSize) {
+        newPosition = slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBorderSize;
     }
     sliderButton.style.top = newPosition + "px";
-    textContainer.style.bottom = (newPosition / (slider.offsetHeight - 2 * sliderBottomBorder - sliderButton.offsetHeight)) * (textContainer.offsetHeight - centerContainer.offsetHeight) + "px";
+    textContainer.style.bottom = (newPosition / (slider.offsetHeight - 2 * sliderBorderSize - sliderButton.offsetHeight)) * (textContainer.offsetHeight - centerContainer.offsetHeight) + "px";
     updateActiveMark(newPosition);
 }
 
@@ -109,15 +112,17 @@ function displayEducationSection(i) {
     timelineElements[i].style.opacity = "1";
     timelineElements[i].style.left = "0px"
     const imgIndex = i >= timelineElements.length / 2 ? i - timelineElements.length / 2 : i + timelineElements.length / 2
+    console.log(timelineImageElements[imgIndex])
     timelineImageElements[imgIndex].style.opacity = "1";
     timelineImageElements[imgIndex].style.left = "0px"
 }
 
 function displayElements() {
     const textReaded = parseInt(window.getComputedStyle(textContainer).getPropertyValue('bottom'))
-    const actualTextPosition = centerContainer.offsetHeight / 2 + textReaded;
+    const actualTextPosition = isUserMobile ? window.scrollY - window.innerHeight / 2 : centerContainer.offsetHeight / 2 + textReaded;
     let comparedTextPosition = 0;
-    comparedTextPosition += textSections[0].offsetHeight;
+    comparedTextPosition += isUserMobile ? mobileFirstContainer.offsetHeight : textSections[0].offsetHeight;
+    comparedTextPosition += document.querySelector(".timeline h1").offsetHeight
     for (let i = 0; i < timelineElements.length; i++) {
         if (actualTextPosition > comparedTextPosition && i % 2 == 0) {
             displayEducationSection(i)
@@ -157,82 +162,17 @@ function displayElements() {
     }
 }
 
-window.addEventListener('load', () => {
-    pcContainer.style.left = 0 + "px";
-    pcContainer.style.opacity = "1";
-})
-
-setTimeout(() => {
-    languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
-    socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
-}, 100)
-
-bottomBackground.style.top = centerContainer.offsetHeight - bottomBackground.offsetHeight + "px"
-
-marks.forEach(mark => {
-    mark.addEventListener("click", () => {
-        handleMarkClick(mark);
-    })
-})
-
-sliderButton.addEventListener("mousedown", (e) => {
-    isDragging = true;
-
-    document.addEventListener("mouseup", () => {
-        isDragging = false;
-    });
-
-    document.addEventListener("mousemove", (e) => {
-        if (isDragging) {
-            sliderButton.style.transition = "top 0s"
-            textContainer.style.transition = "bottom 0s"
-            handleScrollMove(e)
-            displayElements();
-        }
-    });
-});
-
-if (!isDragging) {
-    slider.addEventListener("click", (e) => {
-        sliderButton.style.transition = "top .2s"
-        textContainer.style.transition = "bottom .2s"
-        handleScrollMove(e)
-        setTimeout(() => {
-            displayElements();
-        }, 200);
-    })
-}
-
-techImgContainers.forEach(container => {
-    const whiteField = document.createElement("div");
-    const techNameElement = document.createElement("div");
-    const image = container.children[0].children[0];
-    whiteField.className = "white-field";
-    techNameElement.className = "tech-name";
-    techNameElement.textContent = image.getAttribute("alt");
-    container.insertAdjacentElement('beforeend', whiteField)
-    container.insertAdjacentElement('beforeend', techNameElement)
-    container.addEventListener('mouseover', () => {
-        techNameElement.style.bottom = '32px';
-        image.style.transform = 'scale(1.15)';
-    })
-    container.addEventListener('mouseout', () => {
-        techNameElement.style.bottom = '72px';
-        image.style.transform = 'scale(1)';
-    })
-})
-
 function displayGallery(id) {
     const mainImageContainer = document.querySelector(".main-img");
     const allImagesContainer = document.querySelector(".other-images-inner-container");
     const mainImgEl = document.createElement("img");
-    const mainImgUrl = isUserPolish ? `./images/${id}_${1}.png` : `../images/${id}_${1}.png` ;
+    const mainImgUrl = isUserPolish ? `./images/${id}_${1}.png` : `../images/${id}_${1}.png`;
     mainImgEl.setAttribute("id", 1);
     mainImgEl.src = mainImgUrl;
     mainImageContainer.insertAdjacentElement('afterbegin', mainImgEl);
     for (let i = 1; i <= portfolioElementsGallerySize[id]; i++) {
         const imgEl = document.createElement("img");
-        const imgUrl = isUserPolish ? `./images/${id}_${i}.png` : `../images/${id}_${i}.png` ;
+        const imgUrl = isUserPolish ? `./images/${id}_${i}.png` : `../images/${id}_${i}.png`;
         imgEl.src = imgUrl;
         const imgId = `${i}`
         imgEl.setAttribute("id", imgId);
@@ -311,17 +251,104 @@ function enablePhotoChanging(displayedPhoto) {
     })
 }
 
+function clearContactForm() {
+    document.getElementById('fullName').value = "";
+    document.getElementById('email').value = "";
+    document.getElementById('message').value = "";
+}
+
+window.addEventListener('load', () => {
+    pcContainer.style.left = 0 + "px";
+    pcContainer.style.opacity = "1";
+})
+
+setTimeout(() => {
+    languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
+    socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
+}, 100)
+
+if (!isUserMobile) {
+    bottomBackground.style.top = centerContainer.offsetHeight - bottomBackground.offsetHeight + "px"
+}
+
+marks.forEach(mark => {
+    mark.addEventListener("click", () => {
+        handleMarkClick(mark);
+    })
+})
+
+sliderButton.addEventListener("mousedown", (e) => {
+    isDragging = true;
+
+    document.addEventListener("mouseup", () => {
+        isDragging = false;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+            sliderButton.style.transition = "top 0s"
+            textContainer.style.transition = "bottom 0s"
+            let newPosition = e.clientY - slider.getBoundingClientRect().top - sliderButton.offsetHeight / 2;
+            handleScrollMove(newPosition)
+            displayElements();
+        }
+    });
+});
+
+if (!isDragging) {
+    slider.addEventListener("click", (e) => {
+        sliderButton.style.transition = "top .2s"
+        textContainer.style.transition = "bottom .2s"
+        let newPosition = e.clientY - slider.getBoundingClientRect().top - sliderButton.offsetHeight / 2;
+        handleScrollMove(newPosition)
+        setTimeout(() => {
+            displayElements();
+        }, 200);
+    })
+}
+
+centerContainer.addEventListener("mousewheel", (e) => {
+    const scrollPower = 30
+    let delta = e.wheelDelta;
+    let newPosition;
+    if (delta > 0) {
+        newPosition = sliderButton.getBoundingClientRect().top - slider.getBoundingClientRect().top - sliderBorderSize - scrollPower;
+    } else if (delta < 0) {
+        newPosition = sliderButton.getBoundingClientRect().top - slider.getBoundingClientRect().top - sliderBorderSize + scrollPower;
+    }
+    handleScrollMove(newPosition)
+    displayElements();
+})
+
+techImgContainers.forEach(container => {
+    const whiteField = document.createElement("div");
+    const techNameElement = document.createElement("div");
+    const image = container.children[0].children[0];
+    whiteField.className = "white-field";
+    techNameElement.className = "tech-name";
+    techNameElement.textContent = image.getAttribute("alt");
+    container.insertAdjacentElement('beforeend', whiteField)
+    container.insertAdjacentElement('beforeend', techNameElement)
+    container.addEventListener('mouseover', () => {
+        techNameElement.style.bottom = '32px';
+        image.style.transform = 'scale(1.15)';
+    })
+    container.addEventListener('mouseout', () => {
+        techNameElement.style.bottom = '72px';
+        image.style.transform = 'scale(1)';
+    })
+})
+
+document.addEventListener("touchmove", () => {
+    displayElements()
+})
+
 portfolioGalleryIcons.forEach(icon => {
     icon.addEventListener("click", (e) => {
         displayGallery(e.target.id)
     })
 })
 
-function clearContactForm() {
-    document.getElementById('fullName').value = "";
-    document.getElementById('email').value = "";
-    document.getElementById('message').value = "";
-}
 
 contactForm.addEventListener('submit', function (e) {
     e.preventDefault()
