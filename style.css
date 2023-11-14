@@ -686,18 +686,23 @@ textarea.contact-form-text-input {
     .timeline-container {
         width: 100%;
     }
+
     .timeline-image-element:first-of-type {
         margin-top: 0;
     }
-    
+
+    .timeline-left {
+        border-right: none;
+    }
+
     .timeline-element {
-        width: 240px;
+        width: 250px;
         height: 280px;
         margin-bottom: 20px;
     }
 
     .timeline-image-element {
-        height: 250px;
+        height: 300px;
         margin-bottom: 20px;
     }
 

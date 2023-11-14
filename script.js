@@ -115,7 +115,7 @@ function displayEducationSection(i) {
     timelineElements[i].style.opacity = "1";
     if (isUserMobile) {
         const elementSide = parseInt(window.getComputedStyle(timelineElements[i]).getPropertyValue('left'));
-        timelineElements[i].style.left = elementSide < 0 ? "20px" : "-20px"
+        timelineElements[i].style.left = elementSide < 0 ? "30px" : "-30px"
     }
     else {
         timelineElements[i].style.left = "0px"
@@ -124,7 +124,7 @@ function displayEducationSection(i) {
     timelineImageElements[imgIndex].style.opacity = "1";
     if (isUserMobile) {
         const elementSide = parseInt(window.getComputedStyle(timelineImageElements[imgIndex]).getPropertyValue('left'));
-        timelineImageElements[imgIndex].style.left = elementSide < 0 ? "20px" : "-20px"
+        timelineImageElements[imgIndex].style.left = elementSide < 0 ? "30px" : "-30px"
     }
     else {
         timelineImageElements[imgIndex].style.left = "0px"
