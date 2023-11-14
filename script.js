@@ -155,32 +155,31 @@ function displayElements() {
             comparedTextPosition += timelineElements[i].offsetHeight;
         }
     }
-}
 
-comparedTextPosition += document.querySelector(".technologies-and-skills h1").offsetHeight
+    comparedTextPosition += document.querySelector(".technologies-and-skills h1").offsetHeight
 
-for (let i = 0; i < techInnerContainers.length; i++) {
-    if (actualTextPosition > comparedTextPosition) {
-        techInnerContainers[i].style.opacity = "1";
-        techInnerContainers[i].style.left = "0px"
-        comparedTextPosition += techInnerContainers[i].offsetHeight
+    for (let i = 0; i < techInnerContainers.length; i++) {
+        if (actualTextPosition > comparedTextPosition) {
+            techInnerContainers[i].style.opacity = "1";
+            techInnerContainers[i].style.left = "0px"
+            comparedTextPosition += techInnerContainers[i].offsetHeight
+        }
     }
-}
 
-comparedTextPosition += document.querySelector(".portfolio h1").offsetHeight
+    comparedTextPosition += document.querySelector(".portfolio h1").offsetHeight
 
-for (let i = 0; i < portfolioElements.length; i++) {
-    if (actualTextPosition > comparedTextPosition) {
-        portfolioElements[i].style.opacity = "1";
-        portfolioElements[i].style.bottom = "0px"
-        comparedTextPosition += portfolioElements[i].offsetHeight
+    for (let i = 0; i < portfolioElements.length; i++) {
+        if (actualTextPosition > comparedTextPosition) {
+            portfolioElements[i].style.opacity = "1";
+            portfolioElements[i].style.bottom = "0px"
+            comparedTextPosition += portfolioElements[i].offsetHeight
+        }
     }
-}
 
-comparedTextPosition += document.querySelector(".contact-form h1").offsetHeight
-if (actualTextPosition > comparedTextPosition) {
-    contactForm.style.opacity = "1"
-}
+    comparedTextPosition += document.querySelector(".contact-form h1").offsetHeight
+    if (actualTextPosition > comparedTextPosition) {
+        contactForm.style.opacity = "1"
+    }
 }
 
 function displayGallery(id) {
