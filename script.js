@@ -259,12 +259,14 @@ function clearContactForm() {
     document.getElementById('message').value = "";
 }
 
-setTimeout(() => {
-    languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
-    socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
-}, 100)
 
 if (!isUserMobile) {
+    
+    setTimeout(() => {
+        languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
+        socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
+    }, 100)
+
     pcContainer.style.left = 0 + "px";
     pcContainer.style.opacity = "1";
 
