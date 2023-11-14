@@ -264,63 +264,65 @@ setTimeout(() => {
     socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
 }, 100)
 
-if (pcContainer) {
+if (!isUserMobile) {
     pcContainer.style.left = 0 + "px";
     pcContainer.style.opacity = "1";
-}
 
-if (!isUserMobile) {
+
     bottomBackground.style.top = centerContainer.offsetHeight - bottomBackground.offsetHeight + "px"
-}
 
-marks.forEach(mark => {
-    mark.addEventListener("click", () => {
-        handleMarkClick(mark);
+    marks.forEach(mark => {
+        mark.addEventListener("click", () => {
+            handleMarkClick(mark);
+        })
     })
-})
 
-sliderButton.addEventListener("mousedown", (e) => {
-    isDragging = true;
 
-    document.addEventListener("mouseup", () => {
-        isDragging = false;
+    sliderButton.addEventListener("mousedown", (e) => {
+        isDragging = true;
+
+        document.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (isDragging) {
+                sliderButton.style.transition = "top 0s"
+                textContainer.style.transition = "bottom 0s"
+                let newPosition = e.clientY - slider.getBoundingClientRect().top - sliderButton.offsetHeight / 2;
+                handleScrollMove(newPosition)
+                displayElements();
+            }
+        });
     });
 
-    document.addEventListener("mousemove", (e) => {
-        if (isDragging) {
-            sliderButton.style.transition = "top 0s"
-            textContainer.style.transition = "bottom 0s"
+    if (!isDragging) {
+        slider.addEventListener("click", (e) => {
+            sliderButton.style.transition = "top .2s"
+            textContainer.style.transition = "bottom .2s"
             let newPosition = e.clientY - slider.getBoundingClientRect().top - sliderButton.offsetHeight / 2;
             handleScrollMove(newPosition)
-            displayElements();
-        }
-    });
-});
+            setTimeout(() => {
+                displayElements();
+            }, 200);
+        })
+    }
 
-if (!isDragging) {
-    slider.addEventListener("click", (e) => {
-        sliderButton.style.transition = "top .2s"
-        textContainer.style.transition = "bottom .2s"
-        let newPosition = e.clientY - slider.getBoundingClientRect().top - sliderButton.offsetHeight / 2;
+
+    centerContainer.addEventListener("mousewheel", (e) => {
+        const scrollPower = 30
+        let delta = e.wheelDelta;
+        let newPosition;
+        if (delta > 0) {
+            newPosition = sliderButton.getBoundingClientRect().top - slider.getBoundingClientRect().top - sliderBorderSize - scrollPower;
+        } else if (delta < 0) {
+            newPosition = sliderButton.getBoundingClientRect().top - slider.getBoundingClientRect().top - sliderBorderSize + scrollPower;
+        }
         handleScrollMove(newPosition)
-        setTimeout(() => {
-            displayElements();
-        }, 200);
+        displayElements();
     })
 }
 
-centerContainer.addEventListener("mousewheel", (e) => {
-    const scrollPower = 30
-    let delta = e.wheelDelta;
-    let newPosition;
-    if (delta > 0) {
-        newPosition = sliderButton.getBoundingClientRect().top - slider.getBoundingClientRect().top - sliderBorderSize - scrollPower;
-    } else if (delta < 0) {
-        newPosition = sliderButton.getBoundingClientRect().top - slider.getBoundingClientRect().top - sliderBorderSize + scrollPower;
-    }
-    handleScrollMove(newPosition)
-    displayElements();
-})
 
 techImgContainers.forEach(container => {
     const whiteField = document.createElement("div");
@@ -340,10 +342,11 @@ techImgContainers.forEach(container => {
         image.style.transform = 'scale(1)';
     })
 })
-
-document.querySelector("body").addEventListener("touchmove", () => {
-    displayElements()
-})
+if (isUserMobile) {
+    document.querySelector("body").addEventListener("touchmove", () => {
+        displayElements()
+    })
+}
 
 portfolioGalleryIcons.forEach(icon => {
     icon.addEventListener("click", (e) => {
