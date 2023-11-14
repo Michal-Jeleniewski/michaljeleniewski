@@ -113,10 +113,22 @@ function handleScrollMove(newPosition) {
 
 function displayEducationSection(i) {
     timelineElements[i].style.opacity = "1";
-    timelineElements[i].style.left = "0px"
+    if (isUserMobile) {
+        const elementSide = parseInt(window.getComputedStyle(timelineElements[i]).getPropertyValue('left'));
+        timelineElements[i].style.left = elementSide < 0 ? "20px" : "-20px"
+    }
+    else {
+        timelineElements[i].style.left = "0px"
+    }
     const imgIndex = i >= timelineElements.length / 2 ? i - timelineElements.length / 2 : i + timelineElements.length / 2
     timelineImageElements[imgIndex].style.opacity = "1";
-    timelineImageElements[imgIndex].style.left = "0px"
+    if (isUserMobile) {
+        const elementSide = parseInt(window.getComputedStyle(timelineImageElements[imgIndex]).getPropertyValue('left'));
+        timelineImageElements[imgIndex].style.left = elementSide < 0 ? "20px" : "-20px"
+    }
+    else {
+        timelineImageElements[imgIndex].style.left = "0px"
+    }
 }
 
 function displayElements() {
@@ -261,7 +273,7 @@ function clearContactForm() {
 
 
 if (!isUserMobile) {
-    
+
     setTimeout(() => {
         languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
         socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";

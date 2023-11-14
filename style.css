@@ -686,9 +686,19 @@ textarea.contact-form-text-input {
     .timeline-container {
         width: 100%;
     }
-
+    .timeline-image-element:first-of-type {
+        margin-top: 0;
+    }
+    
     .timeline-element {
-        width: 95%;
+        width: 240px;
+        height: 280px;
+        margin-bottom: 20px;
+    }
+
+    .timeline-image-element {
+        height: 250px;
+        margin-bottom: 20px;
     }
 
     .background-bottom,
