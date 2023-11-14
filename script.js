@@ -113,8 +113,6 @@ function handleScrollMove(newPosition) {
 
 function displayEducationSection(i) {
     timelineElements[i].style.opacity = "1";
-    timelineElements[i].classList.add("displayed")
-    timelineImageElements[imgIndex].classList.add("displayed")
     if (isUserMobile) {
         const elementSide = parseInt(window.getComputedStyle(timelineElements[i]).getPropertyValue('left'));
         timelineElements[i].style.left = elementSide < 0 ? "20px" : "-20px"
@@ -131,6 +129,8 @@ function displayEducationSection(i) {
     else {
         timelineImageElements[imgIndex].style.left = "0px"
     }
+    timelineElements[i].classList.add("displayed")
+    timelineImageElements[imgIndex].classList.add("displayed")
 }
 
 function displayElements() {
