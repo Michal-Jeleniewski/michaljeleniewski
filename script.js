@@ -113,6 +113,8 @@ function handleScrollMove(newPosition) {
 
 function displayEducationSection(i) {
     timelineElements[i].style.opacity = "1";
+    timelineElements[i].classList.add("displayed")
+    timelineImageElements[imgIndex].classList.add("displayed")
     if (isUserMobile) {
         const elementSide = parseInt(window.getComputedStyle(timelineElements[i]).getPropertyValue('left'));
         timelineElements[i].style.left = elementSide < 0 ? "20px" : "-20px"
@@ -139,41 +141,46 @@ function displayElements() {
     comparedTextPosition += document.querySelector(".timeline h1").offsetHeight
     for (let i = 0; i < timelineElements.length; i++) {
         if (actualTextPosition > comparedTextPosition && i % 2 == 0) {
-            displayEducationSection(i)
+            if (!timelineElements[i].classList.contains("displayed")) {
+                displayEducationSection(i)
+            };
             comparedTextPosition += timelineElements[i].offsetHeight;
         }
     }
     for (let i = 0; i < timelineElements.length; i++) {
         if (actualTextPosition > comparedTextPosition && i % 2 == 1) {
-            displayEducationSection(i)
+            if (!timelineElements[i].classList.contains("displayed")) {
+                displayEducationSection(i)
+            };
             comparedTextPosition += timelineElements[i].offsetHeight;
         }
     }
+}
 
-    comparedTextPosition += document.querySelector(".technologies-and-skills h1").offsetHeight
+comparedTextPosition += document.querySelector(".technologies-and-skills h1").offsetHeight
 
-    for (let i = 0; i < techInnerContainers.length; i++) {
-        if (actualTextPosition > comparedTextPosition) {
-            techInnerContainers[i].style.opacity = "1";
-            techInnerContainers[i].style.left = "0px"
-            comparedTextPosition += techInnerContainers[i].offsetHeight
-        }
-    }
-
-    comparedTextPosition += document.querySelector(".portfolio h1").offsetHeight
-
-    for (let i = 0; i < portfolioElements.length; i++) {
-        if (actualTextPosition > comparedTextPosition) {
-            portfolioElements[i].style.opacity = "1";
-            portfolioElements[i].style.bottom = "0px"
-            comparedTextPosition += portfolioElements[i].offsetHeight
-        }
-    }
-
-    comparedTextPosition += document.querySelector(".contact-form h1").offsetHeight
+for (let i = 0; i < techInnerContainers.length; i++) {
     if (actualTextPosition > comparedTextPosition) {
-        contactForm.style.opacity = "1"
+        techInnerContainers[i].style.opacity = "1";
+        techInnerContainers[i].style.left = "0px"
+        comparedTextPosition += techInnerContainers[i].offsetHeight
     }
+}
+
+comparedTextPosition += document.querySelector(".portfolio h1").offsetHeight
+
+for (let i = 0; i < portfolioElements.length; i++) {
+    if (actualTextPosition > comparedTextPosition) {
+        portfolioElements[i].style.opacity = "1";
+        portfolioElements[i].style.bottom = "0px"
+        comparedTextPosition += portfolioElements[i].offsetHeight
+    }
+}
+
+comparedTextPosition += document.querySelector(".contact-form h1").offsetHeight
+if (actualTextPosition > comparedTextPosition) {
+    contactForm.style.opacity = "1"
+}
 }
 
 function displayGallery(id) {
