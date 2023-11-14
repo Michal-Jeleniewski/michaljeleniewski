@@ -38,7 +38,10 @@ const contactForm = document.querySelector("#form")
 
 const sliderButton = document.querySelector('.slider-button');
 const slider = document.querySelector(".slider");
-const sliderBorderSize = parseInt(window.getComputedStyle(slider).getPropertyValue('border-bottom'))
+let sliderBorderSize;
+if (slider) {
+    sliderBorderSize = parseInt(window.getComputedStyle(slider).getPropertyValue('border-bottom'))
+}
 
 const mobileFirstContainer = document.querySelector(".first-container");
 
