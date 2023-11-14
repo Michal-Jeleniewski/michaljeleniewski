@@ -115,7 +115,6 @@ function displayEducationSection(i) {
     timelineElements[i].style.opacity = "1";
     timelineElements[i].style.left = "0px"
     const imgIndex = i >= timelineElements.length / 2 ? i - timelineElements.length / 2 : i + timelineElements.length / 2
-    console.log(timelineImageElements[imgIndex])
     timelineImageElements[imgIndex].style.opacity = "1";
     timelineImageElements[imgIndex].style.left = "0px"
 }
@@ -260,13 +259,15 @@ function clearContactForm() {
     document.getElementById('message').value = "";
 }
 
-pcContainer.style.left = 0 + "px";
-pcContainer.style.opacity = "1";
-
 setTimeout(() => {
     languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
     socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
 }, 100)
+
+if (pcContainer) {
+    pcContainer.style.left = 0 + "px";
+    pcContainer.style.opacity = "1";
+}
 
 if (!isUserMobile) {
     bottomBackground.style.top = centerContainer.offsetHeight - bottomBackground.offsetHeight + "px"
@@ -377,7 +378,7 @@ contactForm.addEventListener('submit', function (e) {
     const loader = document.getElementById('loader');
     loader.style.display = 'block';
 
-    fetch('submit_form.php', {
+    fetch(isUserPolish ? 'submit_form.php' : '../submit_form.php', {
         method: 'POST',
         body: formData
     })
@@ -386,7 +387,6 @@ contactForm.addEventListener('submit', function (e) {
             clearContactForm();
             errorElement.textContent = isUserPolish ? 'Wiadomość została wysłana' : 'Message successfully sent';
             loader.style.display = 'none';
-            console.log(data);
         })
         .catch(error => {
             errorElement.textContent = isUserPolish ? 'Nie udało się wysłać wiadomości, spróbuj ponownie' : 'Failed to send message, please try again';
