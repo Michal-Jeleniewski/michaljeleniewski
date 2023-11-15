@@ -113,24 +113,20 @@ function handleScrollMove(newPosition) {
 
 function displayEducationSection(i) {
     timelineElements[i].style.opacity = "1";
+    timelineElements[i].style.left = "0px"
     if (isUserMobile) {
-        const elementSide = parseInt(window.getComputedStyle(timelineElements[i]).getPropertyValue('left'));
-        timelineElements[i].style.left = elementSide < 0 ? "30px" : "-30px"
-    }
-    else {
-        timelineElements[i].style.left = "0px"
-    }
-    const imgIndex = i >= timelineElements.length / 2 ? i - timelineElements.length / 2 : i + timelineElements.length / 2
-    timelineImageElements[imgIndex].style.opacity = "1";
-    if (isUserMobile) {
-        const elementSide = parseInt(window.getComputedStyle(timelineImageElements[imgIndex]).getPropertyValue('left'));
-        timelineImageElements[imgIndex].style.left = elementSide < 0 ? "30px" : "-30px"
-    }
-    else {
+        const imgIndex = i;
+        timelineImageElements[imgIndex].style.opacity = "1";
         timelineImageElements[imgIndex].style.left = "0px"
+        timelineImageElements[imgIndex].classList.add("displayed")
+    }
+    else {
+        const imgIndex = i >= timelineElements.length / 2 ? i - timelineElements.length / 2 : i + timelineElements.length / 2
+        timelineImageElements[imgIndex].style.opacity = "1";
+        timelineImageElements[imgIndex].style.left = "0px"
+        timelineImageElements[imgIndex].classList.add("displayed")
     }
     timelineElements[i].classList.add("displayed")
-    timelineImageElements[imgIndex].classList.add("displayed")
 }
 
 function displayElements() {
@@ -139,20 +135,32 @@ function displayElements() {
     let comparedTextPosition = 0;
     comparedTextPosition += isUserMobile ? mobileFirstContainer.offsetHeight : textSections[0].offsetHeight;
     comparedTextPosition += document.querySelector(".timeline h1").offsetHeight
-    for (let i = 0; i < timelineElements.length; i++) {
-        if (actualTextPosition > comparedTextPosition && i % 2 == 0) {
-            if (!timelineElements[i].classList.contains("displayed")) {
-                displayEducationSection(i)
-            };
-            comparedTextPosition += timelineElements[i].offsetHeight;
+    if (isUserMobile) {
+        for (let i = 0; i < timelineElements.length; i++) {
+            if (actualTextPosition > comparedTextPosition && i % 2 == 0) {
+                if (!timelineElements[i].classList.contains("displayed")) {
+                    displayEducationSection(i)
+                };
+                comparedTextPosition += timelineElements[i].offsetHeight;
+            }
         }
     }
-    for (let i = 0; i < timelineElements.length; i++) {
-        if (actualTextPosition > comparedTextPosition && i % 2 == 1) {
-            if (!timelineElements[i].classList.contains("displayed")) {
-                displayEducationSection(i)
-            };
-            comparedTextPosition += timelineElements[i].offsetHeight;
+    else {
+        for (let i = 0; i < timelineElements.length; i++) {
+            if (actualTextPosition > comparedTextPosition && i % 2 == 0) {
+                if (!timelineElements[i].classList.contains("displayed")) {
+                    displayEducationSection(i)
+                };
+                comparedTextPosition += timelineElements[i].offsetHeight;
+            }
+        }
+        for (let i = 0; i < timelineElements.length; i++) {
+            if (actualTextPosition > comparedTextPosition && i % 2 == 1) {
+                if (!timelineElements[i].classList.contains("displayed")) {
+                    displayEducationSection(i)
+                };
+                comparedTextPosition += timelineElements[i].offsetHeight;
+            }
         }
     }
 
