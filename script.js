@@ -375,6 +375,9 @@ if (isUserMobile) {
     document.querySelector("body").addEventListener("touchmove", () => {
         displayElements()
     })
+    technologiesSection.addEventListener("click", () => {
+        resetAllTechElements()
+    })
     techImgContainers.forEach(container => {
         const whiteField = document.createElement("div");
         const techNameElement = document.createElement("div");
@@ -385,9 +388,17 @@ if (isUserMobile) {
         container.insertAdjacentElement('beforeend', whiteField)
         container.insertAdjacentElement('beforeend', techNameElement)
         container.addEventListener('click', () => {
-            resetAllTechElements()
-            techNameElement.style.bottom = '32px';
-            image.style.transform = 'scale(1.15)';
+            if (!container.classList.contains("clicked")) {
+                resetAllTechElements()
+                techNameElement.style.bottom = '32px';
+                image.style.transform = 'scale(1.15)';
+                container.classList.add("clicked")
+            }
+            else {
+                techNameElement.style.bottom = '72px';
+                image.style.transform = 'scale(1)';
+                container.classList.remove("clicked")
+            }
         })
     })
 }
