@@ -704,8 +704,15 @@ textarea.contact-form-text-input {
         margin-bottom: 20px;
     }
 
+    .timeline-element-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
     .timeline-image-element {
-        height: 300px;
+        height: 200px;
         margin-bottom: 20px;
     }
 

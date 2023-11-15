@@ -142,6 +142,7 @@ function displayElements() {
                     displayEducationSection(i)
                 };
                 comparedTextPosition += timelineElements[i].offsetHeight;
+                comparedTextPosition += timelineImageElements[i].offsetHeight;
             }
         }
     }
@@ -349,31 +350,55 @@ if (!isUserMobile) {
         handleScrollMove(newPosition)
         displayElements();
     })
+
+    techImgContainers.forEach(container => {
+        const whiteField = document.createElement("div");
+        const techNameElement = document.createElement("div");
+        const image = container.children[0].children[0];
+        whiteField.className = "white-field";
+        techNameElement.className = "tech-name";
+        techNameElement.textContent = image.getAttribute("alt");
+        container.insertAdjacentElement('beforeend', whiteField)
+        container.insertAdjacentElement('beforeend', techNameElement)
+        container.addEventListener('mouseover', () => {
+            techNameElement.style.bottom = '32px';
+            image.style.transform = 'scale(1.15)';
+        })
+        container.addEventListener('mouseout', () => {
+            techNameElement.style.bottom = '72px';
+            image.style.transform = 'scale(1)';
+        })
+    })
 }
 
-
-techImgContainers.forEach(container => {
-    const whiteField = document.createElement("div");
-    const techNameElement = document.createElement("div");
-    const image = container.children[0].children[0];
-    whiteField.className = "white-field";
-    techNameElement.className = "tech-name";
-    techNameElement.textContent = image.getAttribute("alt");
-    container.insertAdjacentElement('beforeend', whiteField)
-    container.insertAdjacentElement('beforeend', techNameElement)
-    container.addEventListener('mouseover', () => {
-        techNameElement.style.bottom = '32px';
-        image.style.transform = 'scale(1.15)';
-    })
-    container.addEventListener('mouseout', () => {
-        techNameElement.style.bottom = '72px';
-        image.style.transform = 'scale(1)';
-    })
-})
 if (isUserMobile) {
     document.querySelector("body").addEventListener("touchmove", () => {
         displayElements()
     })
+    techImgContainers.forEach(container => {
+        const whiteField = document.createElement("div");
+        const techNameElement = document.createElement("div");
+        const image = container.children[0].children[0];
+        whiteField.className = "white-field";
+        techNameElement.className = "tech-name";
+        techNameElement.textContent = image.getAttribute("alt");
+        container.insertAdjacentElement('beforeend', whiteField)
+        container.insertAdjacentElement('beforeend', techNameElement)
+        container.addEventListener('click', () => {
+            resetAllTechElements()
+            techNameElement.style.bottom = '32px';
+            image.style.transform = 'scale(1.15)';
+        })
+    })
+}
+
+function resetAllTechElements() {
+    techImgContainers.forEach(container => {
+        const techNameElement = container.querySelector('.tech-name');
+        const image = container.children[0].children[0];
+        techNameElement.style.bottom = '0';
+        image.style.transform = 'scale(1)';
+    });
 }
 
 portfolioGalleryIcons.forEach(icon => {
