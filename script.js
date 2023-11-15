@@ -375,8 +375,11 @@ if (isUserMobile) {
     document.querySelector("body").addEventListener("touchmove", () => {
         displayElements()
     })
-    technologiesSection.addEventListener("click", () => {
-        resetAllTechElements()
+    technologiesSection.addEventListener("click", (e) => {
+        console.log(e.target)
+        if (!techImgContainers.contains(e.target)) {
+            resetAllTechElements()
+        }
     })
     techImgContainers.forEach(container => {
         const whiteField = document.createElement("div");
