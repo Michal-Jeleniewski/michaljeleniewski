@@ -394,7 +394,7 @@ if (isUserMobile) {
 
 function resetAllTechElements() {
     techImgContainers.forEach(container => {
-        const techNameElement = container.querySelector('.tech-name');
+        const techNameElement = container.children[2];
         const image = container.children[0].children[0];
         techNameElement.style.bottom = '0';
         image.style.transform = 'scale(1)';
