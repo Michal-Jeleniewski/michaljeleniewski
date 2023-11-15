@@ -137,7 +137,7 @@ function displayElements() {
     comparedTextPosition += document.querySelector(".timeline h1").offsetHeight
     if (isUserMobile) {
         for (let i = 0; i < timelineElements.length; i++) {
-            if (actualTextPosition > comparedTextPosition && i % 2 == 0) {
+            if (actualTextPosition > comparedTextPosition) {
                 if (!timelineElements[i].classList.contains("displayed")) {
                     displayEducationSection(i)
                 };
