@@ -396,7 +396,7 @@ function resetAllTechElements() {
     techImgContainers.forEach(container => {
         const techNameElement = container.children[2];
         const image = container.children[0].children[0];
-        techNameElement.style.bottom = '0';
+        techNameElement.style.bottom = '72px';
         image.style.transform = 'scale(1)';
     });
 }
