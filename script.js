@@ -376,9 +376,6 @@ if (isUserMobile) {
     body.addEventListener("touchmove", () => {
         displayElements()
     })
-    body.addEventListener("click", () => {
-        resetAllTechElements()
-    })
     techImgContainers.forEach(container => {
         const whiteField = document.createElement("div");
         const techNameElement = document.createElement("div");
@@ -388,12 +385,13 @@ if (isUserMobile) {
         techNameElement.textContent = image.getAttribute("alt");
         container.insertAdjacentElement('beforeend', whiteField)
         container.insertAdjacentElement('beforeend', techNameElement)
-        container.addEventListener('click', () => {
+        container.addEventListener('click', (event) => {
             if (!container.classList.contains("clicked")) {
                 resetAllTechElements()
                 techNameElement.style.bottom = '32px';
                 image.style.transform = 'scale(1.15)';
                 container.classList.add("clicked")
+                event.stopPropagation();
             }
             else {
                 techNameElement.style.bottom = '72px';
@@ -401,6 +399,9 @@ if (isUserMobile) {
                 container.classList.remove("clicked")
             }
         })
+    })
+    body.addEventListener("click", () => {
+        resetAllTechElements()
     })
 }
 
