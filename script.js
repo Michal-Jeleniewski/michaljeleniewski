@@ -1,3 +1,4 @@
+const body = document.querySelector("body");
 const pcContainer = document.querySelector(".pc-container");
 const isUserPolish = window.location.href == "http://michaljeleniewski.pl/"
 const isUserMobile = window.innerWidth < 1100;
@@ -372,14 +373,11 @@ if (!isUserMobile) {
 }
 
 if (isUserMobile) {
-    document.querySelector("body").addEventListener("touchmove", () => {
+    body.addEventListener("touchmove", () => {
         displayElements()
     })
-    technologiesSection.addEventListener("click", (e) => {
-        console.log(e.target)
-        if (!techImgContainers.contains(e.target)) {
-            resetAllTechElements()
-        }
+    body.addEventListener("click", () => {
+        resetAllTechElements()
     })
     techImgContainers.forEach(container => {
         const whiteField = document.createElement("div");
