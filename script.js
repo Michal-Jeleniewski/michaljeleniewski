@@ -375,7 +375,7 @@ if (!isUserMobile) {
 }
 
 if (isUserMobile) {
-    body.addEventListener("scroll", () => {
+    document.addEventListener("scroll", () => {
         displayElements();
         const scrollTop = window.scrollY;
         if (scrollTop > lastScrollTop) {
