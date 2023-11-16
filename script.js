@@ -375,21 +375,22 @@ if (!isUserMobile) {
 }
 
 if (isUserMobile) {
-    document.addEventListener("devicemotion", () => {
+    let lastScrollTop = 0;
+    document.addEventListener("touchstart", () => {
         displayElements();
     })
-    // document.addEventListener("touchend", () => {
-    //     displayElements();
-    // })
-    // document.addEventListener("touchmove", () => {
-    //     displayElements();
-    //     const scrollTop = window.scrollY;
-    //     if (scrollTop > lastScrollTop) {
-    //         navbar.style.transform = 'translateY(-100%)';
-    //     } else {
-    //         navbar.style.transform = 'translateY(0)';
-    //     }
-    // })
+    document.addEventListener("touchend", () => {
+        displayElements();
+    })
+    document.addEventListener("touchmove", () => {
+        displayElements();
+        const scrollTop = window.scrollY;
+        if (scrollTop > lastScrollTop) {
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            navbar.style.transform = 'translateY(0)';
+        }
+    })
     techImgContainers.forEach(container => {
         const whiteField = document.createElement("div");
         const techNameElement = document.createElement("div");
