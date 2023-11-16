@@ -668,7 +668,7 @@ textarea.contact-form-text-input {
         background-color: #272525;
         color: white;
         padding: 10px;
-        transform: translateY(-100%);
+        transform: translateY(0%);
     }
 
     .first-container {
