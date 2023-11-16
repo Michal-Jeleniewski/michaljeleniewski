@@ -380,7 +380,7 @@ if (isUserMobile) {
         displayElements();
         const scrollTop = window.scrollY;
         if (scrollTop > lastScrollTop) {
-            navbar.style.transform = 'translateY(-100%)';
+            navbar.style.transform = 'translateY(calc(-100% - 14px));';
         } else {
             navbar.style.transform = 'translateY(0)';
         }
