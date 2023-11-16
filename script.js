@@ -376,13 +376,13 @@ if (!isUserMobile) {
 
 if (isUserMobile) {
     let lastScrollTop = 0;
-    document.addEventListener("touchstart", () => {
-        displayElements();
-    })
-    document.addEventListener("touchend", () => {
-        displayElements();
-    })
-    document.addEventListener("touchmove", () => {
+    // document.addEventListener("touchstart", () => {
+    //     displayElements();
+    // })
+    // document.addEventListener("touchend", () => {
+    //     displayElements();
+    // })
+    document.addEventListener("scroll", () => {
         displayElements();
         const scrollTop = window.scrollY;
         if (scrollTop > lastScrollTop) {
