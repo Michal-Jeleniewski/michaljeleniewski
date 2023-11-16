@@ -3,6 +3,8 @@ const pcContainer = document.querySelector(".pc-container");
 const isUserPolish = window.location.href == "http://michaljeleniewski.pl/"
 const isUserMobile = window.innerWidth < 1100;
 
+const navbar = document.getElementById('navbar');
+
 const leftContainer = document.querySelector(".left-container")
 const languageSection = document.querySelector(".language")
 const marksSection = document.querySelector(".marks")
@@ -132,7 +134,7 @@ function displayEducationSection(i) {
 
 function displayElements() {
     const textReaded = parseInt(window.getComputedStyle(textContainer).getPropertyValue('bottom'))
-    const actualTextPosition = isUserMobile ? window.scrollY - window.innerHeight / 2 : centerContainer.offsetHeight / 2 + textReaded;
+    const actualTextPosition = isUserMobile ? window.scrollY : centerContainer.offsetHeight / 2 + textReaded;
     let comparedTextPosition = 0;
     comparedTextPosition += isUserMobile ? mobileFirstContainer.offsetHeight : textSections[0].offsetHeight;
     comparedTextPosition += document.querySelector(".timeline h1").offsetHeight
@@ -373,8 +375,14 @@ if (!isUserMobile) {
 }
 
 if (isUserMobile) {
-    body.addEventListener("touchmove", () => {
-        displayElements()
+    body.addEventListener("scroll", () => {
+        displayElements();
+        const scrollTop = window.scrollY;
+        if (scrollTop > lastScrollTop) {
+            navbar.style.transform = 'translateY(-100%)';
+        } else {
+            navbar.style.transform = 'translateY(0)';
+        }
     })
     techImgContainers.forEach(container => {
         const whiteField = document.createElement("div");
