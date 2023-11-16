@@ -375,7 +375,13 @@ if (!isUserMobile) {
 }
 
 if (isUserMobile) {
-    document.addEventListener("scroll", () => {
+    document.addEventListener("touchstart", () => {
+        displayElements();
+    })
+    document.addEventListener("touchend", () => {
+        displayElements();
+    })
+    document.addEventListener("touchmove", () => {
         displayElements();
         const scrollTop = window.scrollY;
         if (scrollTop > lastScrollTop) {
