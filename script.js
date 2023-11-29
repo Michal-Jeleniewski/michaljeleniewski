@@ -45,16 +45,22 @@ let sliderBorderSize;
 if (slider) {
     sliderBorderSize = parseInt(window.getComputedStyle(slider).getPropertyValue('border-bottom'))
 }
-
-const mobileFirstContainer = document.querySelector(".first-container");
-
-
 let isDragging = false;
 
+const mobileFirstContainer = document.querySelector(".first-container");
+const mobileMenuButton = document.querySelector(".mobile-menu-button")
+const mobileMenu = document.querySelector(".mobile-menu")
+const overlay = document.querySelector(".overlay")
+
+let isMenuOpen = false;
+
 function updateActiveMark(newPosition) {
-    const distanceFromTop = newPosition / centerContainer.offsetHeight * textContainer.offsetHeight;
+    const distanceFromTop = isUserMobile ? newPosition + window.innerHeight / 2 : newPosition / centerContainer.offsetHeight * textContainer.offsetHeight;
     let activeSection;
     let totalHeight = 0;
+    if (isUserMobile) {
+        totalHeight += mobileFirstContainer.offsetHeight;
+    }
     for (let i = 0; i < textSections.length; i++) {
         totalHeight += textSections[i].offsetHeight;
         if (distanceFromTop > totalHeight) {
@@ -69,12 +75,14 @@ function updateActiveMark(newPosition) {
         if (mark.getAttribute("value") == activeSection.className) {
             mark.classList.add("active")
         }
-        else { mark.classList.remove("active") }
+        else {
+            mark.classList.remove("active")
+        }
     });
 }
 
 function handleMarkClick(clickedMark) {
-    let totalHeight = 0;
+    let totalHeight = isUserMobile ? mobileFirstContainer.offsetHeight - navbar.offsetHeight : 0;
     let newTextPosition;
     for (let i = 0; i < marks.length; i++) {
         if (marks[i] === clickedMark) {
@@ -86,17 +94,25 @@ function handleMarkClick(clickedMark) {
             marks[i].classList.remove("active")
         }
     }
-    sliderButton.style.transition = "top .4s";
-    textContainer.style.transition = "bottom .2s";
-    let newButtonPosition = (newTextPosition / (textContainer.offsetHeight - centerContainer.offsetHeight)) * (slider.offsetHeight - sliderButton.offsetHeight)
-    if (newButtonPosition > slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBorderSize) {
-        newButtonPosition = slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBorderSize;
+    if (!isUserMobile) {
+        sliderButton.style.transition = "top .4s";
+        textContainer.style.transition = "bottom .2s";
+        let newButtonPosition = (newTextPosition / (textContainer.offsetHeight - centerContainer.offsetHeight)) * (slider.offsetHeight - sliderButton.offsetHeight)
+        if (newButtonPosition > slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBorderSize) {
+            newButtonPosition = slider.offsetHeight - sliderButton.offsetHeight - 2 * sliderBorderSize;
+        }
+        if (newTextPosition > textContainer.offsetHeight - centerContainer.offsetHeight) {
+            newTextPosition = textContainer.offsetHeight - centerContainer.offsetHeight;
+        }
+        sliderButton.style.top = newButtonPosition + "px";
+        textContainer.style.bottom = newTextPosition + "px";
     }
-    if (newTextPosition > textContainer.offsetHeight - centerContainer.offsetHeight) {
-        newTextPosition = textContainer.offsetHeight - centerContainer.offsetHeight;
+    else {
+        window.scrollTo({
+            top: newTextPosition,
+            behavior: 'smooth'
+        });
     }
-    sliderButton.style.top = newButtonPosition + "px";
-    textContainer.style.bottom = newTextPosition + "px";
     setTimeout(() => {
         displayElements();
     }, 200);
@@ -198,13 +214,13 @@ function displayGallery(id) {
     const mainImageContainer = document.querySelector(".main-img");
     const allImagesContainer = document.querySelector(".other-images-inner-container");
     const mainImgEl = document.createElement("img");
-    const mainImgUrl = isUserPolish ? `./images/${id}_${1}.png` : `../images/${id}_${1}.png`;
+    const mainImgUrl = isUserPolish ? `./app/images/${id}_${1}.png` : `../app/images/${id}_${1}.png`;
     mainImgEl.setAttribute("id", 1);
     mainImgEl.src = mainImgUrl;
     mainImageContainer.insertAdjacentElement('afterbegin', mainImgEl);
     for (let i = 1; i <= portfolioElementsGallerySize[id]; i++) {
         const imgEl = document.createElement("img");
-        const imgUrl = isUserPolish ? `./images/${id}_${i}.png` : `../images/${id}_${i}.png`;
+        const imgUrl = isUserPolish ? `./app/images/${id}_${i}.png` : `../app/images/${id}_${i}.png`;
         imgEl.src = imgUrl;
         const imgId = `${i}`
         imgEl.setAttribute("id", imgId);
@@ -290,24 +306,38 @@ function clearContactForm() {
 }
 
 
+function resetAllTechElements() {
+    techImgContainers.forEach(container => {
+        const techNameElement = container.children[2];
+        const image = container.children[0].children[0];
+        techNameElement.style.bottom = '72px';
+        image.style.transform = 'scale(1)';
+    });
+}
+
+function handleMenuButtonClick() {
+    if (isMenuOpen) {
+        mobileMenu.style.left = "calc(100vw + 20px)"
+        mobileMenuButton.style.left = "calc(100vw - 50px)"
+        mobileMenuButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="white" height="40px" viewBox="0 0 448 512"><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" /></svg >'
+        overlay.style.display = "none"
+        overlay.style.opacity = "0"
+    }
+    else {
+        mobileMenu.style.left = "calc(100vw - 200px)"
+        mobileMenuButton.style.left = "calc(100vw - 270px)"
+        mobileMenuButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" fill="white" height="40px" viewBox="0 0 384 512"><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>'
+        overlay.style.display = "block"
+        overlay.style.opacity = "0.5"
+    }
+    isMenuOpen = !isMenuOpen;
+}
 if (!isUserMobile) {
-
-    setTimeout(() => {
-        languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
-        socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
-    }, 100)
-
+    languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
+    socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
     pcContainer.style.left = 0 + "px";
     pcContainer.style.opacity = "1";
-
-
     bottomBackground.style.top = centerContainer.offsetHeight - bottomBackground.offsetHeight + "px"
-
-    marks.forEach(mark => {
-        mark.addEventListener("click", () => {
-            handleMarkClick(mark);
-        })
-    })
 
 
     sliderButton.addEventListener("mousedown", (e) => {
@@ -379,13 +409,21 @@ if (isUserMobile) {
     document.addEventListener("scroll", () => {
         displayElements();
         const scrollTop = window.scrollY;
-        if (scrollTop > lastScrollTop) {
+        updateActiveMark(scrollTop);
+        if (scrollTop > lastScrollTop && !isMenuOpen) {
             navbar.style.transform = 'translateY(calc(-100% - 14px))';
+            mobileMenuButton.style.top = "-60px"
         } else {
             navbar.style.transform = 'translateY(0)';
+            mobileMenuButton.style.top = "20px"
         }
         lastScrollTop = scrollTop;
     })
+
+    mobileMenuButton.addEventListener("click", () => {
+        handleMenuButtonClick();
+    })
+
     techImgContainers.forEach(container => {
         const whiteField = document.createElement("div");
         const techNameElement = document.createElement("div");
@@ -415,14 +453,11 @@ if (isUserMobile) {
     })
 }
 
-function resetAllTechElements() {
-    techImgContainers.forEach(container => {
-        const techNameElement = container.children[2];
-        const image = container.children[0].children[0];
-        techNameElement.style.bottom = '72px';
-        image.style.transform = 'scale(1)';
-    });
-}
+marks.forEach(mark => {
+    mark.addEventListener("click", () => {
+        handleMarkClick(mark);
+    })
+})
 
 portfolioGalleryIcons.forEach(icon => {
     icon.addEventListener("click", (e) => {
