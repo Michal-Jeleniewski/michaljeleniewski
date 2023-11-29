@@ -492,7 +492,7 @@ contactForm.addEventListener('submit', function (e) {
     const loader = document.getElementById('loader');
     loader.style.display = 'block';
 
-    fetch('./app/submit_form.php', {
+    fetch(isUserPolish ? './app/submit_form.php' : '../app/submit_form.php', {
         method: 'POST',
         body: formData
     })
