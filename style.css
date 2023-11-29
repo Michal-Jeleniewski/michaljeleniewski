@@ -658,6 +658,9 @@ textarea.contact-form-text-input {
     .mobile-container {
         display: flex;
         flex-direction: column;
+        position: relative;
+        top:40px;
+        opacity: 0;
     }
 
     .overlay {

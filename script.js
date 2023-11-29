@@ -1,5 +1,6 @@
 const body = document.querySelector("body");
 const pcContainer = document.querySelector(".pc-container");
+const mobileContainer = document.querySelector(".mobile-container")
 const isUserPolish = window.location.href == "http://michaljeleniewski.pl/"
 const isUserMobile = window.innerWidth < 1100;
 
@@ -335,8 +336,10 @@ function handleMenuButtonClick() {
 if (!isUserMobile) {
     languageSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
     socialSection.style.height = (leftContainer.offsetHeight - marksSection.offsetHeight) / 2 + "px";
-    pcContainer.style.left = 0 + "px";
-    pcContainer.style.opacity = "1";
+    window.addEventListener('load', () => {
+        pcContainer.style.left = 0 + "px";
+        pcContainer.style.opacity = "1";
+    })
     bottomBackground.style.top = centerContainer.offsetHeight - bottomBackground.offsetHeight + "px"
 
 
@@ -405,6 +408,10 @@ if (!isUserMobile) {
 }
 
 if (isUserMobile) {
+    window.addEventListener('load', () => {
+        mobileContainer.style.top = 0 + "px";
+        mobileContainer.style.opacity = "1";
+    })
     let lastScrollTop = 0;
     document.addEventListener("scroll", () => {
         displayElements();
