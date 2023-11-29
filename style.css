@@ -658,16 +658,15 @@ textarea.contact-form-text-input {
     .mobile-container {
         display: flex;
         flex-direction: column;
-        position: relative;
-        top:40px;
         opacity: 0;
+        transition: opacity .5s;
     }
 
     .overlay {
         position: fixed;
         width: 100vw;
         height: 100vh;
-        z-index: 4;
+        z-index: 1;
         background: rgb(0, 0, 0);
         opacity: 0;
         transition: opacity .5s;
@@ -722,7 +721,7 @@ textarea.contact-form-text-input {
     .mark:hover {
         background: none;
         border-top-left-radius: 0;
-        border-bottom-left-radius:0;
+        border-bottom-left-radius: 0;
         width: 180px;
         right: 0px;
     }
@@ -831,5 +830,48 @@ textarea.contact-form-text-input {
 
     textarea.contact-form-text-input {
         width: 100%;
+    }
+
+    .gallery {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        height: 100vh;
+        width: 100vw;
+        justify-content: space-between;
+    }
+
+    .close-gallery {
+        left: calc(50vw - 45px);
+        top: 20px;
+    }
+
+    .gallery-main-container {
+        width: 100vw;
+    }
+
+    .main-img {
+        width: 80vw;
+    }
+
+    .main-img img {
+        height: auto;
+        width: 80vw;
+    }
+
+    .other-images-outer-container {
+        margin-bottom: 20px;
+    }
+
+    .other-images-inner-container {
+        width: 100vw;
+        height: auto;
+        gap: 16px;
+    }
+
+    .other-images-inner-container img {
+        object-fit: cover;
+        height: auto;
+        width: calc(20vw - 12px);
     }
 }
